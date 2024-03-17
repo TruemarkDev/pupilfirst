@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
   # Redirect all requests from unknown domains to service homepage.
   rescue_from RequestFromUnknownDomain do
     redirect_to(
-      "https://lms.pupilfirst.org?redirect_from=#{current_host}",
+      "https://learn.allbrainy.com?redirect_from=#{current_host}",
       allow_other_host: true
     )
   end
