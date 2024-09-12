@@ -7,10 +7,13 @@ AllCops:
     - "log/**/*"
     - "node_modules/**/*"
     - "vendor/**/*"
+    - bin/**/*
 
 # Rails specific
 
-require: rubocop-rails
+require:
+  - rubocop-rails
+  - rubocop-performance
 
 Rails/OutputSafety:
   Enabled: false # This disallows .html_safe
@@ -26,6 +29,13 @@ Rails/FindEach:
   Enabled: false # Blanket find_each isn't a good idea
 Rails/RakeEnvironment:
   Enabled: false # There is no need for all rake tasks to load the environment
+
+Rails/UnknownEnv:
+  Environments:
+    - development
+    - test
+    - production
+    - local
 
 # Project styling
 

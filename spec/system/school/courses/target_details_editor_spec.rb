@@ -444,6 +444,8 @@ feature "Target Details Editor", js: true do
   end
 
   scenario "user is notified on reloading window if target editor has unsaved changes" do
+    pending "Unable to test because of https://issues.chromium.org/issues/42323840"
+
     sign_in_user course_author.user,
                  referrer:
                    details_school_course_target_path(
@@ -454,14 +456,12 @@ feature "Target Details Editor", js: true do
     expect(page).to have_text("Does this assignment have any prerequisites?")
 
     # Can refresh the page without any confirm dialog
-    visit current_path
+    refresh
 
     fill_in "title", with: new_target_title, fill_options: { clear: :backspace }
 
-    visit current_path
-
     # Need to confirm if page is refreshed with unsaved data.
-    accept_confirm
+    accept_confirm { refresh }
   end
 
   context "when targets have an existing checklist" do
@@ -1044,12 +1044,12 @@ feature "Target Details Editor", js: true do
       dismiss_notification
 
       target = quiz_target.reload
+      assignment = target.assignments.first
       expected_checklist = []
-      expect(target.checklist).to eq(expected_checklist)
-      expect(target.quiz).to eq(nil)
-      expect(target.assignments.first.evaluation_criteria.first).to eq(
-        evaluation_criterion
-      )
+
+      expect(assignment.checklist).to eq(expected_checklist)
+      expect(assignment.quiz).to eq(nil)
+      expect(assignment.evaluation_criteria.first).to eq(evaluation_criterion)
 
       # Check only the graded submissions are preserved on switching to an evaluated target
       expect(target.timeline_events.count).to eq(1)
@@ -1179,8 +1179,6 @@ feature "Target Details Editor", js: true do
 
       expect(target_l2_2.reload.sort_index).to eq(2)
       expect(target_l2_2.target_group).to eq(target_group_l1)
-      expect(target_l2_2.prerequisite_targets).to eq([])
-      expect(target_l2_3.reload.prerequisite_targets).to eq([])
     end
 
     context "admin modifies target that currently has submissions" do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_21_092154) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
   enable_extension "pg_stat_statements"
@@ -43,6 +43,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "additional_user_discord_roles", id: false, force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "discord_role_id", null: false
+    t.index ["discord_role_id"], name: "index_additional_user_discord_roles_on_discord_role_id"
+    t.index ["user_id", "discord_role_id"], name: "index_user_discord_roles_on_user_id_and_discord_role_id", unique: true
   end
 
   create_table "admin_users", id: :serial, force: :cascade do |t|
@@ -116,6 +123,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_audit_records_on_school_id"
+  end
+
+  create_table "authentication_tokens", force: :cascade do |t|
+    t.string "token", null: false
+    t.string "token_type", null: false
+    t.string "purpose", null: false
+    t.string "authenticatable_type"
+    t.bigint "authenticatable_id"
+    t.datetime "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["expires_at"], name: "index_authentication_tokens_on_expires_at"
+    t.index ["token", "authenticatable_type", "authenticatable_id"], name: "index_auth_tokens_on_token_and_authenticable", unique: true
   end
 
   create_table "bounce_reports", force: :cascade do |t|
@@ -231,6 +251,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
     t.index ["user_id"], name: "index_course_authors_on_user_id"
   end
 
+  create_table "course_categories", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "school_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_course_categories_on_school_id"
+  end
+
   create_table "course_exports", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "course_id"
@@ -240,6 +268,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
     t.text "json_data"
     t.string "export_type"
     t.boolean "include_inactive_students", default: false
+    t.boolean "include_user_standings", default: false, null: false
     t.index ["course_id"], name: "index_course_exports_on_course_id"
     t.index ["user_id"], name: "index_course_exports_on_user_id"
   end
@@ -251,6 +280,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
     t.index ["cohort_id"], name: "index_course_exports_cohorts_on_cohort_id"
     t.index ["course_export_id", "cohort_id"], name: "index_course_exports_cohorts_on_course_export_id_and_cohort_id", unique: true
     t.index ["course_export_id"], name: "index_course_exports_cohorts_on_course_export_id"
+  end
+
+  create_table "course_ratings", force: :cascade do |t|
+    t.integer "rating", null: false
+    t.bigint "course_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_course_ratings_on_course_id"
+    t.index ["user_id", "course_id"], name: "index_course_ratings_on_user_id_and_course_id", unique: true
+    t.index ["user_id"], name: "index_course_ratings_on_user_id"
   end
 
   create_table "courses", force: :cascade do |t|
@@ -273,8 +313,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
     t.bigint "default_cohort_id"
     t.boolean "discord_account_required", default: false
     t.integer "github_team_id"
+    t.integer "sort_index", default: 0
+    t.boolean "beckn_enabled", default: false, null: false
     t.index ["default_cohort_id"], name: "index_courses_on_default_cohort_id"
     t.index ["school_id"], name: "index_courses_on_school_id"
+  end
+
+  create_table "courses_course_categories", force: :cascade do |t|
+    t.bigint "course_id", null: false
+    t.bigint "course_category_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_category_id"], name: "index_courses_course_categories_on_course_category_id"
+    t.index ["course_id"], name: "index_courses_course_categories_on_course_id"
   end
 
   create_table "data_migrations", id: false, force: :cascade do |t|
@@ -311,6 +362,20 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
     t.index ["channel_uuid"], name: "index_discord_messages_on_channel_uuid"
     t.index ["server_uuid"], name: "index_discord_messages_on_server_uuid"
     t.index ["user_id"], name: "index_discord_messages_on_user_id"
+  end
+
+  create_table "discord_roles", force: :cascade do |t|
+    t.string "name"
+    t.string "discord_id", null: false
+    t.bigint "school_id", null: false
+    t.integer "position"
+    t.string "color_hex"
+    t.boolean "default", default: false
+    t.jsonb "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["discord_id"], name: "index_discord_roles_on_discord_id", unique: true
+    t.index ["school_id"], name: "index_discord_roles_on_school_id"
   end
 
   create_table "domains", force: :cascade do |t|
@@ -370,6 +435,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
     t.index ["student_id"], name: "index_faculty_student_enrollments_on_student_id"
   end
 
+  create_table "failed_input_token_attempts", force: :cascade do |t|
+    t.string "authenticatable_type", null: false
+    t.bigint "authenticatable_id", null: false
+    t.string "purpose", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["authenticatable_type", "authenticatable_id", "purpose"], name: "index_failed_attempts_on_authenticatable_and_purpose"
+    t.index ["authenticatable_type", "authenticatable_id"], name: "index_failed_input_token_attempts_on_authenticatable"
+  end
+
   create_table "features", id: :serial, force: :cascade do |t|
     t.string "key"
     t.string "value"
@@ -391,6 +466,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["feature_key", "key", "value"], name: "index_flipper_gates_on_feature_key_and_key_and_value", unique: true
+  end
+
+  create_table "inbound_webhooks", force: :cascade do |t|
+    t.string "status", default: "pending", null: false
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "issued_certificates", force: :cascade do |t|
@@ -540,12 +622,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
 
   create_table "quizzes", force: :cascade do |t|
     t.string "title"
-    t.bigint "target_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "assignment_id"
     t.index ["assignment_id"], name: "index_quizzes_on_assignment_id"
-    t.index ["target_id"], name: "index_quizzes_on_target_id", unique: true
   end
 
   create_table "reactions", force: :cascade do |t|
@@ -602,6 +682,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
     t.datetime "updated_at", precision: nil, null: false
     t.text "about"
     t.jsonb "configuration", default: {}, null: false
+    t.boolean "beckn_enabled", default: false, null: false
   end
 
   create_table "standings", force: :cascade do |t|
@@ -645,6 +726,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
     t.bigint "team_id"
     t.datetime "completed_at", precision: nil
     t.string "github_repository"
+    t.jsonb "metadata", default: {}, null: false
     t.index ["cohort_id"], name: "index_students_on_cohort_id"
     t.index ["team_id"], name: "index_students_on_team_id"
     t.index ["user_id"], name: "index_students_on_user_id"
@@ -707,33 +789,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-  create_table "target_evaluation_criteria", force: :cascade do |t|
-    t.bigint "target_id"
-    t.bigint "evaluation_criterion_id"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["evaluation_criterion_id"], name: "index_target_evaluation_criteria_on_evaluation_criterion_id"
-    t.index ["target_id"], name: "index_target_evaluation_criteria_on_target_id"
-  end
-
   create_table "target_groups", id: :serial, force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "sort_index"
-    t.boolean "milestone"
     t.integer "level_id"
     t.boolean "archived", default: false
     t.index ["level_id"], name: "index_target_groups_on_level_id"
     t.index ["sort_index"], name: "index_target_groups_on_sort_index"
-  end
-
-  create_table "target_prerequisites", id: :serial, force: :cascade do |t|
-    t.integer "target_id"
-    t.integer "prerequisite_target_id"
-    t.index ["prerequisite_target_id"], name: "index_target_prerequisites_on_prerequisite_target_id"
-    t.index ["target_id"], name: "index_target_prerequisites_on_target_id"
   end
 
   create_table "target_versions", force: :cascade do |t|
@@ -744,10 +809,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
   end
 
   create_table "targets", id: :serial, force: :cascade do |t|
-    t.string "role"
     t.string "title"
     t.text "description"
-    t.string "completion_instructions"
     t.string "resource_url"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
@@ -768,10 +831,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
     t.boolean "resubmittable", default: true
     t.string "visibility"
     t.jsonb "review_checklist", default: []
-    t.jsonb "checklist", default: []
     t.text "action_config"
-    t.boolean "milestone", default: false
-    t.integer "milestone_number"
     t.index ["archived"], name: "index_targets_on_archived"
     t.index ["session_at"], name: "index_targets_on_session_at"
     t.index ["target_group_id"], name: "index_targets_on_target_group_id"
@@ -989,13 +1049,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
   add_foreign_key "community_course_connections", "courses"
   add_foreign_key "course_authors", "courses"
   add_foreign_key "course_authors", "users"
+  add_foreign_key "course_categories", "schools"
   add_foreign_key "course_exports", "courses"
   add_foreign_key "course_exports", "users"
   add_foreign_key "course_exports_cohorts", "cohorts"
   add_foreign_key "course_exports_cohorts", "course_exports"
+  add_foreign_key "course_ratings", "courses"
+  add_foreign_key "course_ratings", "users"
   add_foreign_key "courses", "cohorts", column: "default_cohort_id"
   add_foreign_key "courses", "schools"
+  add_foreign_key "courses_course_categories", "course_categories"
+  add_foreign_key "courses_course_categories", "courses"
   add_foreign_key "discord_messages", "users"
+  add_foreign_key "discord_roles", "schools"
   add_foreign_key "domains", "schools"
   add_foreign_key "faculty_cohort_enrollments", "cohorts"
   add_foreign_key "faculty_cohort_enrollments", "faculty"
@@ -1020,7 +1086,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
   add_foreign_key "quiz_questions", "answer_options", column: "correct_answer_id"
   add_foreign_key "quiz_questions", "quizzes"
   add_foreign_key "quizzes", "assignments"
-  add_foreign_key "quizzes", "targets"
   add_foreign_key "reactions", "users"
   add_foreign_key "school_admins", "users"
   add_foreign_key "school_links", "schools"
@@ -1035,8 +1100,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_23_120822) do
   add_foreign_key "submission_comments", "users"
   add_foreign_key "submission_comments", "users", column: "hidden_by_id"
   add_foreign_key "submission_reports", "timeline_events", column: "submission_id"
-  add_foreign_key "target_evaluation_criteria", "evaluation_criteria"
-  add_foreign_key "target_evaluation_criteria", "targets"
   add_foreign_key "target_groups", "levels"
   add_foreign_key "target_versions", "targets"
   add_foreign_key "teams", "cohorts"

@@ -163,8 +163,6 @@ ru:
     CourseCertificates__EditDrawer:
       active_help: Хоть у вас может быть несколько сертификатов, только один может быть выдан автоматически; он будет выдан, когда студент <em>окончит</em> курс.
       active_label: Следует ли студентам автоматически выдавать этот сертификат?
-      cannot_be_auto_issued_warning: Обратите внимание, что последний уровень этого курса не имеет каких-либо контрольных задач. Этот сертификат будет автоматически выдан только в том случае, если на последнем уровне есть хотя бы одна задача.
-      edit_action: Редактировать Сертификат
       font_size_label: Размер Шрифта
       margin_label: Отступ
       name_error: Имя не может быть пустым
@@ -430,10 +428,9 @@ ru:
       level_locked_explanation: Вы можете получить доступ к контенту %{date}.
       level_locked_for_students_notice: Этот уровень по-прежнему заблокирован для учащихся и будет разблокирован <strong>%{date}</strong>.
       level_locked_notice: Уровень в настоящее время заблокирован!
-      milestone_targets: Контрольные задачи
       nav_next_level: След. Уровень
       nav_previous_level: Пред. Уровень
-      milestone_target_label: Milestone
+      milestone_label: Milestone
       nav_aria_next_level: Go to the next level
       nav_aria_previous_level: Go to the previous level
       nav_long_next_level: Next Level
@@ -482,17 +479,6 @@ ru:
       course_complete_title: Поздравляю! Вы выполнили все контрольные задачи на последнем уровне.
       course_ended_description: Курс завершен, и отправка материалов отключена для всех задачах!
       course_ended_title: Курс Окончен
-      level_up_blocked:
-        body_middle_pending_review: "все еще ожидают рассмотрения ментором. "
-        body_middle_rejected: "были отклонены. "
-        body_prefix: Вы отправили все контрольные задачи на уровне %{number}, но еще остались задачи
-        body_suffix: Вам нужен проходной балл по всем контрольным показателям для повышения уровня.
-        title_pending_review: Ожидает оценки
-        title_rejected: Поднятие Уровня Блокирован
-      level_up_description: Поздравляем! Вы успешно выполнили все контрольные задачи, необходимые для перехода на следующий уровень курса. Нажмите кнопку «Поднять уровень» ниже, чтобы продолжить изучение курса.
-      level_up_limited_description: Вы на Уровне %{currentLevel}, но у вас остались задачи на уровне %{minimumRequiredLevel} которые были отклонены или все еще ожидают рассмотрения ментором. Вам нужно будет пройти все этапы на Уровне %{minimumRequiredLevel} чтобы продолжать повышать уровень.
-      level_up_limited_title: Повышение Уровня Заблокировано
-      level_up_title: Готовы к повышению!
       preview_mode_description: Вы входите в режим предварительного просмотра курса
       preview_mode_title: Режим предварительного просмотра
       team_members_pending_description: Вы выполнили все необходимые контрольные задачи, но один или несколько товарищей по команде еще не закончили. Попросите их войти в систему и проверить, нет ли незавершенных контрольных показателей.
@@ -519,7 +505,7 @@ ru:
       previous_target_button: Пред. Задача
       scroll_to_top: Пролистать наверх
       learn_cta_submit_form: Submit Form
-      milestone_target_label: Milestone
+      milestone_label: Milestone
     CoursesCurriculum__Quiz:
       next_question: След. Вопрос
       question: Вопрос
@@ -560,7 +546,6 @@ ru:
     CoursesCurriculum__TargetStatus:
       access_locked: Ваш доступ к этому курсу закончился.
       course_locked: Курс был окончен.
-      level_locked: Вы на уровне %{current_level}. Сперва завершите все контрольные задачи на Уровне %{current_level}.
       prerequisites_incomplete: Данная задача имеет предварительные условия которые вы не выполнили.
       status:
         completed: Завершен
@@ -602,7 +587,6 @@ ru:
       milestone_completed: Completed
       milestone_pending: Pending
       milestone_status_help: Discover your essential milestones for course completion right here. Track your progress and catch any targets you might have overlooked.
-      milestone_status_title: Milestone targets
       quizzes_attempted:
         one: 1 Quiz Attempted
         other: "%{count} Quizzes Attempted"
@@ -852,7 +836,6 @@ ru:
       targets_overview: Обзор Задач
       team_coaches: Менторы Команд
       total_targets_completed: Всего задач выполнено
-      milestone_targets: Milestone Targets
       quizzes_attempted:
         one: 1 Quiz Attempted
         other: "%{count} Quizzes Attempted"
@@ -1080,7 +1063,6 @@ ru:
       create: Создать
       create_a_target: Создать задачу
       create_target: Создать задачу
-      milestone_targets: Контрольные Задачи
       move_down: Двинуть Вниз
       move_up: Двинуть Вверх
     CurriculumEditor__TargetQuizAnswer:
@@ -1100,7 +1082,7 @@ ru:
       move_down: Двинуть Вниз
       move_up: Двинуть Вверх
       of_target: задачи
-      milestone_target_label: Milestone
+      milestone_label: Milestone
     CurriculumEditor__TargetVersionSelector:
       edit: Редактировать
       preview: Предпросмотр
@@ -1844,7 +1826,7 @@ ru:
       add_new_course: Add New Course
       button_load_more: Load More Courses...
       course_links:
-        download_reports: Download Reports
+        view_calendar: Посмотреть календарь
         edit_curriculum: Edit Curriculum
         manage_coaches: Manage Coaches
         manage_students: Manage Students
@@ -2832,16 +2814,16 @@ ru:
         page_title:
           title: Versions | Post
     users:
-      sessions_new:
-        button_text:
-          continue_as_developer: Continue as Developer
-          continue_with_discord: Continue with Discord
-          continue_with_email_link: Continue with email
-          continue_with_facebook: Continue with Facebook
-          continue_with_github: Continue with Github
-          continue_with_google: Continue with Google
-        page_title:
-          title: Sign In
+      sessions:
+        new:
+          button_text:
+            continue_as_developer: Continue as Developer
+            continue_with_discord: Continue with Discord
+            continue_with_email_link: Continue with email
+            continue_with_facebook: Continue with Facebook
+            continue_with_github: Continue with Github
+            continue_with_google: Continue with Google
+          page_title: Sign In
   queries:
     delete_certificate_mutator:
       issued_error: Этот сертификат выдан одному или нескольким студентам - его нельзя удалить.
@@ -2889,7 +2871,6 @@ ru:
     create:
       invalid_credentials: Почта и пароль не совпадают. Пожалуйста, проверьте свои учетные данные и попробуйте еще раз.
     email_sent:
-      image_alt: Электронное письмо придет на вашу почту
       magic_link:
         description: Ссылка придет вам на почту менее чем через минуту. Щелкните ссылку в письме, и вы войдете в систему.
         heading: Мы отправили вам ссылку!
@@ -2913,7 +2894,6 @@ ru:
       cancel_link: Войдите в систему с Google, Facebook или Github
       email_label: Почта
       heading: Сброс пароля
-      image_alt: Студент держит гигантский ключ с символом сброса на нем
       page_title: Сброс пароля
       submit_button: Запросить сброс пароля
       subtitle: Введите свой адрес электронной почты для восстановления пароля.
@@ -2971,6 +2951,7 @@ ru:
     load_more: Загрузить Больше...
     loading: Загрузка...
     login_token_expiration_warning_html: Срок действия этой ссылки истекает через %{timestamp}. Если срок действия ссылки истек, вы можете запросить еще один одноразовый токен на <a href="%{login_url}" %>странице входа</a>. Обратите внимание, что это личный URL-адрес, которым нельзя делиться.
+    milestones: Вехи
     move_down: Двигать Вниз
     move_up: Двигать Вверх
     name: Имя
@@ -3069,7 +3050,7 @@ ru:
     back_link: Back
     cohort: Cohort
     cohort_overview:
-      no_milestone_targets: There are no milestone targets.
+      no_milestones: There are no milestones.
       no_students: There are no students in this cohort.
       overview_link: Overview
       student_distribution_by_milestone: Student Distribution by Milestone Completion
@@ -3118,7 +3099,6 @@ ru:
         invalid_session: We were unable to verify whether it was you who asked to be signed in. Please try to sign in again.
         success: Your Discord account has been linked successfully. Your access to our Discord server will be updated shortly.
       email_sent:
-        image_alt: An email flying into to your inbox
         magic_link:
           description: If an account is associated with this email address, a one-time link will be sent. Click the link in the email, and you'll be signed in.
           heading: We've sent you a magic link!
@@ -3139,14 +3119,13 @@ ru:
         email_label: Email
         email_placeholder: john@example.com
         heading: Reset your password
-        image_alt: A student holding a giant key with a reset symbol on it
         page_title: Reset password
         submit_button: Request password reset
         subtitle: Enter your email for password recovery.
       reset_password:
         link_used: That one-time link has already been used, or is invalid. Please try resetting your password again.
         page_title: Reset Password | %{title}
-      sign_in_with_email:
+      sign_in_with_password:
         already_signed: You are already signed in.
         email: Continue with email
         email_address: Email Address
@@ -3188,7 +3167,7 @@ ru:
           step_1_description_html: Click on the <em>Link Discord</em> button below.
           step_1_label: 1
           step_2_description_html: Authorize <em>Pupilfirst LMS</em> to access your Discord account.
-          step_2_help_html: If you don't have a Discord account, you can sign up for one and link it in one go using the button on this page.<br/><br/>We'll use the authorization to:<ul class='list-disc mt-2 ml-6'><li>Keep your nickname on the Discord server in sync with your name here.</li><li>Assign additional roles to your account on our Discord server.</li></ul>
+          step_2_help_html: If you don't have a Discord account, you can sign up for one and link it in one go using the button on this page.<br/><br/>We'll use the authorization to:<ul class='mt-2 ml-6 list-disc'><li>Keep your nickname on the Discord server in sync with your name here.</li><li>Assign additional roles to your account on our Discord server.</li></ul>
           step_2_label: 2
           step_3_description_html: You'll be redirected back to this page, and you can start taking the course.
           step_3_label: 3
@@ -3350,7 +3329,7 @@ ru:
           main_html: "<p>Мы получили запрос на обновление вашей электронной почты в %{school_name}.</p> <p> Нажмите на эту ссылку %{link_to}, чтобы обновить электронную почту. Ссылка действительна только в течение 30 минут.</p>"
           note_html: <p>Это действие необратимо.</p>
         subject: Обновите свой адрес электронной почты в школе %{school_name}
-    sign_in_with_email:
+    sign_in_with_password:
       type_password: Ваш Пароль
     students:
       title: Студенты
@@ -3415,7 +3394,6 @@ ru:
     students:
       show:
         average_grades: Average Grades
-        milestone_targets: Milestone Targets
         reviewed_submissions:
           button: View previously reviewed submissions
           heading: Reviewed submissions
@@ -3494,7 +3472,7 @@ ru:
         title: Applicants
       assignments:
         list_title: Arrange milestone assignments
-        milestone_msg: This is the order in which milestone targets are shown to students on their report page. This does not affect the order in which students submit work for targets; that is controlled by assigning prerequisites.
+        milestone_msg: This is the order in which milestones are shown to students on their report page. This does not affect the order in which students submit work for targets; that is controlled by assigning prerequisites.
         no_milestones: No milestones found in this course. Create milestones by visiting curriculum page.
         title: Assignments
       authors:

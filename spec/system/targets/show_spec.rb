@@ -97,15 +97,8 @@ feature "Target Overlay", js: true do
            :with_shared_assignment,
            :with_content,
            target_group: target_group_l2,
-           given_role: Target::ROLE_TEAM,
-           given_evaluation_criteria: [criterion_1],
-           checklist: [
-             {
-               kind: Target::CHECKLIST_KIND_LONG_TEXT,
-               title: "Write something about your target submission",
-               optional: false
-             }
-           ]
+           given_role: Assignment::ROLE_TEAM,
+           given_evaluation_criteria: [criterion_1]
   end
 
   let!(:quiz) { create :quiz }
@@ -304,7 +297,7 @@ feature "Target Overlay", js: true do
     expect(last_submission.checklist).to eq(
       [
         {
-          "kind" => Target::CHECKLIST_KIND_LONG_TEXT,
+          "kind" => Assignment::CHECKLIST_KIND_LONG_TEXT,
           "title" => "Write something about your submission",
           "result" => long_answer,
           "status" => TimelineEvent::CHECKLIST_STATUS_NO_ANSWER
@@ -389,7 +382,7 @@ feature "Target Overlay", js: true do
     expect(last_submission.checklist).to eq(
       [
         {
-          "kind" => Target::CHECKLIST_KIND_LONG_TEXT,
+          "kind" => Assignment::CHECKLIST_KIND_LONG_TEXT,
           "title" => "Write something about your submission",
           "result" => long_answer,
           "status" => TimelineEvent::CHECKLIST_STATUS_NO_ANSWER
@@ -413,9 +406,7 @@ feature "Target Overlay", js: true do
     find(".course-overlay__body-tab-item", text: "Submit Form").click
 
     replace_markdown "Short answer"
-
-    # Select the submit anonymously option.
-    find("span", text: "Submit anonymously").click
+    check "Submit anonymously"
     click_button "Submit"
 
     expect(page).to have_text("Your response has been saved")
@@ -621,9 +612,6 @@ feature "Target Overlay", js: true do
         find("div[aria-label='#{submission_1.checklist.first["title"]}']").click
         expect(page).to have_content(submission_1.checklist.first["result"])
 
-        expect(page).to have_content("#{criterion_1.name}: Good")
-        expect(page).to have_content("#{criterion_2.name}: Okay")
-
         expect(page).to have_content(coach_1.name)
         expect(page).to have_content(coach_1.title)
         expect(page).to have_content(feedback_1.feedback)
@@ -738,7 +726,7 @@ feature "Target Overlay", js: true do
 
       # It should be possible to navigate to the prerequisite target.
       within(".course-overlay__prerequisite-targets") do
-        find("span", text: prerequisite_target.title).click
+        click_link prerequisite_target.title
       end
 
       within(".course-overlay__header-title-card") do
@@ -958,17 +946,17 @@ feature "Target Overlay", js: true do
         [
           {
             title: "Describe your submission",
-            kind: Target::CHECKLIST_KIND_LONG_TEXT,
+            kind: Assignment::CHECKLIST_KIND_LONG_TEXT,
             optional: false
           },
           {
             title: "Attach link",
-            kind: Target::CHECKLIST_KIND_LINK,
+            kind: Assignment::CHECKLIST_KIND_LINK,
             optional: true
           },
           {
             title: "Attach files",
-            kind: Target::CHECKLIST_KIND_FILES,
+            kind: Assignment::CHECKLIST_KIND_FILES,
             optional: true
           }
         ]

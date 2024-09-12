@@ -3,7 +3,7 @@ ruby "3.2.2"
 source "https://rubygems.org"
 
 # Ruby on Rails. http://rubyonrails.org
-gem "rails", "~> 7.0.8"
+gem "rails", "~> 7.1.3"
 
 gem "dotenv-rails", "~> 2.8", groups: %i[development test]
 
@@ -22,7 +22,7 @@ gem "activerecord-precounter", "~> 0.4" # N+1 count query optimizer for ActiveRe
 gem "turbolinks", "~> 5.2" # Quicker page navigation. https://github.com/turbolinks/turbolinks
 gem "rest-client", "~> 2.1" # Used to contact Fast Alerts' API.
 gem "valid_url", "= 0.0.4", github: "ralovets/valid_url" # URL validation: https://github.com/ralovets/valid_url
-gem "puma", "~> 5.0" # Use the Puma web server [https://github.com/puma/puma]
+gem "puma", "~> 5.6" # Use the Puma web server [https://github.com/puma/puma]
 gem "slowpoke", "~> 0.5.0" # Rack::Timeout enhancements for Rails. https://github.com/ankane/slowpoke
 gem "delayed_job_active_record", "~> 4.1" # Delayed Job for deferring tasks.
 gem "delayed-web", "~> 0.4" # A rails engine that provides a simple web interface for exposing the Delayed::Job queue.
@@ -33,7 +33,6 @@ gem "motion-markdown-it", "~> 13.0" # Ruby version of Markdown-it (a CommonMark 
 gem "motion-markdown-it-plugins", "~> 8.4" # Plugins for motion-markdown-it.
 gem "gaffe", "~> 1.2" # Custom error pages. https://github.com/mirego/gaffe
 gem "acts-as-taggable-on", "~> 10.0" # Tag a single model on several contexts.
-gem "email_inquire", "~> 0.11" # Validate email for format, common typos and one-time email providers
 gem "titleize", "~> 1.4" # better titleizing, modifies Inflector.titleize from default rails
 gem "reform", "~> 2.6" # Form objects decoupled from models. http://www.trailblazer.to/gems/reform
 gem "reform-rails", "~> 0.2"
@@ -42,7 +41,7 @@ gem "dry-validation", "~> 1.7" # There seems to be a dependency bug in reform's 
 gem "postmark-rails", "~> 0.22" # Official integration library for using Rails and ActionMailer with the Postmark HTTP API.
 gem "responders", "~> 3.0" # A set of Rails responders to dry up your application (respond_to / with)
 gem "rollbar", "~> 3.4" # Exception tracking and logging from Ruby to Rollbar https://rollbar.com
-gem "humanize", "~> 2.5" # Convert numbers to english words
+gem "humanize", "~> 3.0" # Convert numbers to english words
 gem "scarf", "~> 0.2" # A Ruby library for generating initial avatars and identicons.
 gem "kaminari", "~> 1.2" # Scope & Engine based, clean, powerful, customizable and sophisticated paginator.
 gem "redis", "~> 5.0" # Redis client for use as cache store for rack-attack
@@ -57,7 +56,7 @@ gem "octokit", "~> 8.0" # A Ruby toolkit for the GitHub API.
 # OmniAuth providers
 gem "omniauth-google-oauth2", "~> 1.1" # Oauth2 strategy for Google.
 gem "omniauth-facebook", "~> 9.0" # Facebook OAuth2 Strategy for OmniAuth.
-gem "omniauth-github", github: "pupilfirst/omniauth-github", branch: "master" # GitHub strategy for OmniAuth. Forked because of incompatibility with omniauth-google-oauth2.
+gem "omniauth-github", "~> 2.0" # GitHub OAuth2 Strategy for OmniAuth.
 gem "omniauth-discord", "~> 1.0" # Discord OAuth2 Strategy for OmniAuth.
 
 gem "file_validators", "~> 3.0" # Adds file validators to ActiveModel.
@@ -74,8 +73,10 @@ gem "flipper", "~> 1.0"
 gem "flipper-ui", "~> 1.0"
 gem "flipper-active_record", "~> 1.0"
 
+gem "config", "~> 5.5"
+
 group :development do
-  gem "letter_opener_web", "~> 2.0" # A web interface for browsing Ruby on Rails sent emails.
+  gem "letter_opener_web", "~> 3.0" # A web interface for browsing Ruby on Rails sent emails.
   gem "bullet", "~> 7.0" # Detect N+1 queries.
   gem "web-console", "~> 4.1" # Rails Console on the Browser.
   gem "listen", "~> 3.7" # The Listen gem listens to file modifications and notifies you about the changes.
@@ -96,7 +97,7 @@ group :test do
   gem "capybara-email", "~> 3.0" # Test ActionMailer and Mailer messages with Capybara
   gem "selenium-webdriver", "~> 4.11" # Ruby bindings for Selenium
   gem "capybara-screenshot", "~> 1.0" # Save screenshots on failure!
-  gem 'capybara-shadowdom', "~> 0.3.0"
+  gem "capybara-shadowdom", "~> 0.3.0"
   gem "rspec-eventually", "~> 0.2.2" # Rspec helper to match eventually
   gem "diffy", "~> 3.4" # Easy Diffing in Ruby. https://github.com/samg/diffy
 end
@@ -105,10 +106,11 @@ group :development, :test do
   gem "faker", "~> 3.2" # A library for generating fake data such as names, addresses, and phone numbers.
   gem "rspec-rails", "~> 6.0" # RSpec for Rails 5+.
   gem "coderay", "~> 1.1" # Pretty syntax highlighting on rspec failure snippets.
-  gem "debug", "~> 1.8.0" # Debugging functionality for Ruby
+  gem "debug", "~> 1.8" # Debugging functionality for Ruby
   gem "webmock", "~> 3.14" # Mocking web requests.
   gem "rubocop", "~> 1.54", require: false # Ruby Style Guide.
   gem "rubocop-rails", "~> 2.20", require: false # A RuboCop extension focused on enforcing Rails best practices and coding conventions.
+  gem "rubocop-performance", "~> 1.21", require: false # A collection of RuboCop cops to check for performance optimizations in Ruby code.
   gem "overcommit", "~> 0.58", require: false # A fully configurable and extendable Git hook manager
   gem "fuubar", "~> 2.5" # The instafailing RSpec progress bar formatter.
   gem "simplecov", "~> 0.21", require: false # Code coverage for Ruby. https://github.com/colszowka/simplecov
